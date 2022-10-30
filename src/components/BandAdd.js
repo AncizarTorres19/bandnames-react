@@ -1,16 +1,19 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { SocketConext } from '../context/SocketContext'
 
-export const BandAdd = ({ createBanda }) => {
+export const BandAdd = () => {
 
-    const [value, setValue] = useState('')
+    const [name, setName] = useState('')
+
+    const { socket } = useContext(SocketConext);
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if (value.trim().length > 0) {
-            //TODO: Llamar la Funcion para emitir el evento
-            createBanda(value);
-            setValue('');
+        if (name.trim().length > 0) {
+            //TODO: Llamar la Funcion para emitir el evento, (Agregar Banda).
+            socket.emit('nueva-banda', { name })
+            setName('');
         }
     }
     return (
@@ -21,8 +24,8 @@ export const BandAdd = ({ createBanda }) => {
                 <input
                     className='form-control'
                     placeholder='Nuevo nombre de banda'
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                 />
             </form>
         </>
